@@ -1,0 +1,47 @@
+-  hosts: localhost
+   gather_facts: no
+   module_defaults:
+    group/aws:
+      region: "us-east-2"
+   tasks:
+    - rds_subnet_group:
+        state: present
+        name: m5-rds-priv-dbgrp
+        description: Module 5 Private Subnet Group
+        subnets:
+          - "{{ private_subnet.subnet.id }}"
+          - "{{ private_subnet2.subnet.id }}"
+      register: rds_subnet_group
+    - rds:
+        command: create
+        instance_name: m5-ansible-image-gallery-rds
+        db_engine: postgres
+        size: 10
+        instance_type: db.t2.micro
+        username: postgres
+        password: simple5678
+        vpc_security_groups: "{{ ig_postgres_sg.group_id }}"
+        subnet: "{{ rds_subnet_group.subnet_group.name }}"
+        wait: yes
+        wait_timeout: 550
+        region: us-east-2
+        zone: us-east-2b
+        tags:
+          Environment: production
+          Name: Module 5 RDS
+      register: rds_instance
+      vars:
+        sec_postgres: {
+          "username": "postgres",
+          "password": "simple", #"{{ pg_user_pass }}",
+          "engine": "postgres",
+          "host": "{{ rds_instance.instance.endpoint }}",
+          "port": 5432,
+          "dbInstanceIdentifier": "m5-ansible-image-gallery-rds",
+          "db_name": "image_gallery"
+        }
+      aws_secret:
+        name: 'sec-m5-postgres'
+        state: present
+        secret_type: 'string'
+        secret: '{{ sec_postgres | to_json }}'

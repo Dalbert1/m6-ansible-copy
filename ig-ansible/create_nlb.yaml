@@ -1,0 +1,72 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ami_id: "ami-026dea5602e368e96" # TAKE THIS OUT OR SUB IT FOR SOMETHING USEFUL
+  module_defaults: 
+    group/aws: 
+      region: "us-east-2"
+  tasks:
+    - elb_target_group:
+        name: m5-asg-ig-tag
+        protocol: tcp
+        port: 80
+        vpc_id: "{{ vpc.vpc.id }}" #vpc-0fb3fe15b2d9fc33f 
+        stickiness_enabled: no
+        stickiness_type: source_ip
+        state: present
+      register: asg_ig_tag
+    - elb_network_lb: #remove this
+        name: m5-ig-asg-lb
+        state: absent
+        wait: yes
+    - name: allocate a new elastic IP without associating it to anything
+      ec2_eip:
+        in_vpc: yes
+        release_on_disassociation: yes
+      register: eip1
+    - name: allocate a new elastic IP without associating it to anything
+      ec2_eip:
+        in_vpc: yes
+        release_on_disassociation: yes
+      register: eip2
+    - elb_network_lb:
+        name: m5-ig-asg-lb
+        subnet_mappings:
+          - SubnetId: "{{ public_subnet.subnet.id }}" # subnet-0e3cb34aa91acba50
+            AllocationId: "{{ eip1.allocation_id }}" # eipalloc-07ecf9b0b83aa288b # find a better way to pull in elastic IPs? maybe these should just be designated first, could be a way to allocate new ones and get their IDs
+          - SubnetId: "{{ public_subnet2.subnet.id }}" # subnet-0909a75845e66be04 # 
+            AllocationId: "{{ eip2.allocation_id }}" # eipalloc-0bc64198c11e05ebf
+        listeners:
+          - Protocol: TCP # Required. The protocol for connections from clients to the load balancer (TCP or TLS) (case-sensitive).
+            Port: 80 # Required. The port on which the load balancer is listening.
+            #Port: 443 # Required for TLS traffic. Not a default setting.
+            DefaultActions:
+              - Type: forward # Required. Only 'forward' is accepted at this time
+                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m5-asg-ig-tag # Required. The name of the target group
+          - Protocol: TLS # Required. The protocol for connections from clients to the load balancer (TCP or TLS) (case-sensitive).
+            Port: 443 # Required for TLS traffic. Not a default setting.
+            DefaultActions:
+              - Type: forward # Required. Only 'forward' is accepted at this time
+                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m5-asg-ig-tag # Required. The name of the target group
+            Certificates:
+              - CertificateArn: arn:aws:acm:us-east-2:530732836590:certificate/f9e073e7-59d6-4f1d-8953-e0237f69d055 # consult module for fetching from credentials manager
+            SslPolicy: ELBSecurityPolicy-2016-08
+        state: present
+        wait: yes
+      register: ig_nlb
+    - route53:
+        state: present
+        overwrite: yes
+        region: us-east-2
+        zone: sky-boston.com
+        record: sky-boston.com
+        identifier: sky-boston.com
+        type: A
+        ttl: 300
+        value:
+          - "{{ eip1.public_ip }}"
+          - "{{ eip2.public_ip }}"
+      
+      
+      
+     

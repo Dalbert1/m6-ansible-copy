@@ -1,0 +1,18 @@
+-  hosts: localhost
+   gather_facts: no
+   module_defaults:
+      group/aws:
+         region: "us-east-2"
+   tasks:
+      - route53:
+         state: present
+         overwrite: yes
+         region: us-east-2
+         zone: sky-boston.com
+         record: new.sky-boston.com
+         identifier: sky-boston.com
+         type: A
+         ttl: 300
+         value:
+            - "{{ eip1.public_ip }}"
+            - "{{ eip2.public_ip }}"
