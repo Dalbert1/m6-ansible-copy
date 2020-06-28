@@ -24,7 +24,7 @@
         iam_instance_profile: image-gallery-role
         tags:
           Name: m5-ig-asg-nginx
-        user_data: "{{ lookup('file', './asg_bootscript.sh') | b64encode }}"
+        user_data: "{{ lookup('file', '.ec2_scripts/asg_bootscript.sh') | b64encode }}"
         disable_api_termination: false
       register: launch_template
     - name: debug
