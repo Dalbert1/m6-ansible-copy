@@ -26,10 +26,10 @@
     - elb_network_lb:
         name: m5-ig-asg-lb
         subnet_mappings:
-          - SubnetId: "{{ public_subnet.subnet.id }}" # subnet-0e3cb34aa91acba50
-            AllocationId: "{{ eip1.allocation_id }}" # eipalloc-07ecf9b0b83aa288b # find a better way to pull in elastic IPs? maybe these should just be designated first, could be a way to allocate new ones and get their IDs
-          - SubnetId: "{{ public_subnet2.subnet.id }}" # subnet-0909a75845e66be04 # 
-            AllocationId: "{{ eip2.allocation_id }}" # eipalloc-0bc64198c11e05ebf
+          - SubnetId: "{{ public_subnet.subnet.id }}"
+            AllocationId: "{{ eip1.allocation_id }}"
+          - SubnetId: "{{ public_subnet2.subnet.id }}"
+            AllocationId: "{{ eip2.allocation_id }}"
         listeners:
           - Protocol: TCP # Required. The protocol for connections from clients to the load balancer (TCP or TLS) (case-sensitive).
             Port: 80 # Required. The port on which the load balancer is listening.
