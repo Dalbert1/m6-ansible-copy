@@ -1,7 +1,5 @@
 - hosts: localhost
   gather_facts: no
-  vars:
-    ami_id: "ami-026dea5602e368e96" # TAKE THIS OUT OR SUB IT FOR SOMETHING USEFUL
   module_defaults: 
     group/aws: 
       region: "us-east-2"
@@ -10,21 +8,17 @@
         name: m5-asg-ig-tag
         protocol: tcp
         port: 80
-        vpc_id: "{{ vpc.vpc.id }}" #vpc-0fb3fe15b2d9fc33f 
+        vpc_id: "{{ vpc.vpc.id }}"
         stickiness_enabled: no
         stickiness_type: source_ip
         state: present
       register: asg_ig_tag
-    - elb_network_lb: #remove this
-        name: m5-ig-asg-lb
-        state: absent
-        wait: yes
-    - name: allocate a new elastic IP without associating it to anything
+    - name: allocate a new elastic IP for Network Load Balancer - first EIP
       ec2_eip:
         in_vpc: yes
         release_on_disassociation: yes
       register: eip1
-    - name: allocate a new elastic IP without associating it to anything
+    - name: allocate a new elastic IP for Network Load Balancer - second EIP
       ec2_eip:
         in_vpc: yes
         release_on_disassociation: yes
@@ -39,7 +33,6 @@
         listeners:
           - Protocol: TCP # Required. The protocol for connections from clients to the load balancer (TCP or TLS) (case-sensitive).
             Port: 80 # Required. The port on which the load balancer is listening.
-            #Port: 443 # Required for TLS traffic. Not a default setting.
             DefaultActions:
               - Type: forward # Required. Only 'forward' is accepted at this time
                 TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m5-asg-ig-tag # Required. The name of the target group

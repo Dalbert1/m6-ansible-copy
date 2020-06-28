@@ -37,9 +37,9 @@
           version: "{{ launch_template.latest_template.version_number }}"
           launch_template_name: "{{ launch_template.latest_template.launch_template_name }}"
           launch_template_id: "{{ launch_template.latest_template.launch_template_id }}"
-        min_size: 2
+        min_size: 1
         max_size: 2
-        desired_capacity: 2
+        desired_capacity: 1
         target_group_arns: "{{ asg_ig_tag.target_group_arn }}"
         tags:
           - environment: production

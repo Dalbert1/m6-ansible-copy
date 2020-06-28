@@ -6,7 +6,7 @@
     group/aws: 
       region: "us-east-2"
   tasks:
-    - name: Provision Dylans Instance
+    - name: Provision Development EC2 Instance - user_data configures RDS image_gallery user and users table on boot
       ec2:
         key_name: auburnec2
         group: [ "{{ ig_development_sg.group_name }}", "{{ nginx_sg.group_name }}", "{{ ig_postgres_tag_sg.group_name }}"]
