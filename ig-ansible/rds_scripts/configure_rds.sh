@@ -22,7 +22,7 @@ export AWS_DEFAULT_OUTPUT=json
 export PGPASSWORD=$(aws secretsmanager get-secret-value --secret-id sec-ig-postgres | jq --raw-output .SecretString | jq -r ."password")
 export PGUSER=$(aws secretsmanager get-secret-value --secret-id sec-ig-postgres | jq --raw-output .SecretString | jq -r ."username")
 export PGHOST=$(aws secretsmanager get-secret-value --secret-id sec-ig-postgres | jq --raw-output .SecretString | jq -r ."host")
-psql  -f ./rds_scripts/create_ig_user.sql
+psql  -f ./rds_scripts/create_ig_user.sql -v v1=$(aws secretsmanager get-secret-value --secret-id sec-ig-image_gallery | jq --raw-output .SecretString | jq -r ."password")
 export PGDATABASE=$(aws secretsmanager get-secret-value --secret-id sec-ig-image_gallery | jq --raw-output .SecretString | jq -r ."database_name")
 export PGUSER=$(aws secretsmanager get-secret-value --secret-id sec-ig-image_gallery | jq --raw-output .SecretString | jq -r ."username")
 export PGPASSWORD=$(aws secretsmanager get-secret-value --secret-id sec-ig-image_gallery | jq --raw-output .SecretString | jq -r ."password")
