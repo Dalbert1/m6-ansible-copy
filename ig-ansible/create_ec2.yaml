@@ -24,3 +24,6 @@
         user_data: "{{ lookup('file', './rds_scripts/configure_rds.sh') }}"
         count_tag:
           Name: m5-ig-development
+        assign_public_ip: yes
+    roles:
+      - image-gallery-role
