@@ -16,11 +16,11 @@ if [ "$#" != "1" ]; then
 	chown -R ec2-user:ec2-user python-image-gallery
 	chown -R ec2-user:ec2-user ig_ansible_boot
 	cd /ig_ansible_boot/ig-ansible
-	export PGPASSWORD='simple5678'
-	psql -h $1 -U postgres -f ./rds_scripts/create_ig_user.sql
-	export PGPASSWORD='simple'
-	psql -h $1 -U image_gallery -d image_gallery -f ./rds_scripts/create_users_tbl.sql
-	cd ig_ansible_boot/ig-ansible
+	#export PGPASSWORD='simple5678'
+	#psql -h $1 -U postgres -f ./rds_scripts/create_ig_user.sql
+	#export PGPASSWORD='simple'
+	#psql -h $1 -U image_gallery -d image_gallery -f ./rds_scripts/create_users_tbl.sql
+	#cd ig_ansible_boot/ig-ansible
 	
 	exit 1
 fi

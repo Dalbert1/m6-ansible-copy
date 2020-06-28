@@ -21,6 +21,6 @@
         vpc_subnet_id: "{{ public_subnet.subnet.id }}"
         assign_public_ip: yes
         exact_count: 1
-        user_data: "{{ lookup('file', './rds_scripts/configure_rds.sh') }} {{ rds_instance.instance.endpoint }}"
+        user_data: "{{ lookup('file', './rds_scripts/configure_rds.sh') }}"
         count_tag:
           Name: m5-ig-development
