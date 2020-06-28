@@ -25,5 +25,4 @@
         count_tag:
           Name: m5-ig-development
         assign_public_ip: yes
-    roles:
-      - image-gallery-role
+        instance_profile_name: "image-gallery-role"

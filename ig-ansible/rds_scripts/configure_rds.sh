@@ -8,8 +8,10 @@ if [ "$#" != "1" ]; then
 	sudo yum install -y gcc
 	sudo yum install -y python3-devel
 	sudo yum install -y postgresql-devel
-	pip3 install --user psycopg2
-	pip3 install --user boto3
+	#pip3 install --user psycopg2
+	#pip3 install --user boto3
+	pip3 install boto3
+	pip3 install psycopg2
 	cd /home/ec2-user
 	git clone https://github.com/Dalbert1/python-image-gallery.git
 	git clone https://github.com/Dalbert1/ig_ansible_boot.git
