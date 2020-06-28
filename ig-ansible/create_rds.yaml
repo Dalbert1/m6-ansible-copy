@@ -4,17 +4,10 @@
    module_defaults:
     group/aws:
       region: "us-east-2"
+   vars:
+    sql_pwd: "{{ lookup('password', '/tmp/m5_ig_pwds/postgres_user chars=ascii_letters,digits') }}"
+    ig_sql_pwd: "{{ lookup('password', '/tmp/m5_ig_pwds/image_gallery_user chars=ascii_letters,digits') }}"
    tasks:
-    - name: create a postgres user for Postgres RDS with a random password using only ascii letters
-        user:
-          name: postgres
-          password: "{{ lookup('password', '/tmp/postgres_user.txt chars=ascii_letters') }}"
-        register: postgres_user
-    - name: create a image_gallery user for Postgres RDS with a random password using only ascii letters
-        user:
-          name: image_gallery
-          password: "{{ lookup('password', '/tmp/image_gallery_user.txt chars=ascii_letters') }}"
-      register: image_gallery_user
     - rds_subnet_group:
         state: present
         name: m5-rds-priv-dbgrp
@@ -29,8 +22,8 @@
         db_engine: postgres
         size: 10
         instance_type: db.t2.micro
-        username: 
-        password: "{{ lookup('file', '/tmp/postgres_user.txt') }}"
+        username: postgres
+        password: "{{ lookup('password', '/tmp/m5_ig_pwds/postgres_user.txt') }}"
         vpc_security_groups: "{{ ig_postgres_sg.group_id }}"
         subnet: "{{ rds_subnet_group.subnet_group.name }}"
         wait: yes
