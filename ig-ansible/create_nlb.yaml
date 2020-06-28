@@ -56,7 +56,7 @@
               - Type: forward # Required. Only 'forward' is accepted at this time
                 TargetGroupName: "{{ asg_ig_tag.target_group_name }}"  # Required. The name of the target group
             Certificates:
-              CertificateArn: "{{ domain_cert.certificate_arn }}"
+              - CertificateArn: "{{ domain_cert.certificates[0].certificate_arn }}"
             SslPolicy: ELBSecurityPolicy-2016-08
         state: present
         wait: yes

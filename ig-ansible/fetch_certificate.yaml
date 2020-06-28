@@ -6,6 +6,7 @@
       aws_acm_info:
         domain_name: "sky-boston.com"
       register: domain_cert
-    - name:
-      debug: var=domain_cert
+    #- name:
+      #debug:
+        #msg: "{{ domain_cert.certificates[0].certificate_arn }}"
 ...
