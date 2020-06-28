@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   gather_facts: no
   vars:
@@ -25,3 +26,4 @@
           Name: m5-ig-development
         assign_public_ip: yes
         instance_profile_name: "image-gallery-role"
+...

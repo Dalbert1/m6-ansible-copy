@@ -1,3 +1,4 @@
+---
 -  hosts: localhost
    gather_facts: no
    module_defaults:
@@ -40,3 +41,4 @@
           Environment: production
           Name: Module 5 RDS
       register: rds_instance
+...

@@ -1,16 +1,18 @@
--  hosts: localhost
-    gather_facts: no
-    module_defaults:
-    group/aws:
-      region: "us-east-2"
-    tasks:
-    - name: create a postgres user for Postgres RDS with a random password using only ascii letters
-        user:
-          name: postgres
-          password: "{{ lookup('password', '/tmp/postgres_user.txt chars=ascii_letters') }}"
-      register: postgres_user
-    - name: create a image_gallery user for Postgres RDS with a random password using only ascii letters
-        user:
-          name: image_gallery
-          password: "{{ lookup('password', '/tmp/image_gallery_user.txt chars=ascii_letters') }}"
-      register: image_gallery_user
+---
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+  group/aws:
+    region: "us-east-2"
+  tasks:
+  - name: create a postgres user for Postgres RDS with a random password using only ascii letters
+      user:
+        name: postgres
+        password: "{{ lookup('password', '/tmp/postgres_user.txt chars=ascii_letters') }}"
+    register: postgres_user
+  - name: create a image_gallery user for Postgres RDS with a random password using only ascii letters
+      user:
+        name: image_gallery
+        password: "{{ lookup('password', '/tmp/image_gallery_user.txt chars=ascii_letters') }}"
+    register: image_gallery_user
+...

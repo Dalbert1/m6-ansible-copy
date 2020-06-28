@@ -1,3 +1,4 @@
+---
 -  hosts: localhost
    gather_facts: no
    module_defaults:
@@ -256,3 +257,4 @@
               - [400, 'tcp', 'allow', '0.0.0.0/0', null, null, 1024, 65535]
           state: 'present'
         register: public_acl
+...

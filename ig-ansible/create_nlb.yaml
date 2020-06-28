@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   gather_facts: no
   module_defaults: 
@@ -59,7 +60,4 @@
         value:
           - "{{ eip1.public_ip }}"
           - "{{ eip2.public_ip }}"
-      
-      
-      
-     
+...
