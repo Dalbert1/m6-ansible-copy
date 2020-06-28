@@ -40,7 +40,7 @@
         min_size: 2
         max_size: 2
         desired_capacity: 2
-        target_group_arns: arn:aws:elasticloadbalancing:us-east-2:530732836590:targetgroup/m5-asg-ig-tag/a7b4c0ef2513f179 #"{{ asg_ig_tag.target_group_arn }}"
+        target_group_arns: "{{ asg_ig_tag.target_group_arn }}"
         tags:
           - environment: production
             propagate_at_launch: no
