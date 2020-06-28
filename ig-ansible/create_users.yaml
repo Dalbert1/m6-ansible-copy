@@ -8,7 +8,7 @@
         user:
           name: postgres
           password: "{{ lookup('password', '/tmp/postgres_user.txt chars=ascii_letters') }}"
-        register: postgres_user
+      register: postgres_user
     - name: create a image_gallery user for Postgres RDS with a random password using only ascii letters
         user:
           name: image_gallery

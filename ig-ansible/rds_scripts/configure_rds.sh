@@ -29,6 +29,4 @@ export PGPASSWORD=$(aws secretsmanager get-secret-value --secret-id sec-ig-image
 psql -f ./rds_scripts/create_users_tbl.sql
 exit 1
 
-
-# CAN GET RANDOM PASSWORDS WITH AWS CLI OR ANSIBLE
 #/var/log/boot.log  ---  System boot log
