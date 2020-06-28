@@ -41,7 +41,7 @@
             Port: 443 # Required for TLS traffic. Not a default setting.
             DefaultActions:
               - Type: forward # Required. Only 'forward' is accepted at this time
-                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m5-asg-ig-tag # Required. The name of the target group
+                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"  # Required. The name of the target group
             Certificates:
               - CertificateArn: arn:aws:acm:us-east-2:530732836590:certificate/f9e073e7-59d6-4f1d-8953-e0237f69d055 # consult module for fetching from credentials manager
             SslPolicy: ELBSecurityPolicy-2016-08
