@@ -2,9 +2,9 @@
 - hosts: localhost
   gather_facts: no
   tasks:
-    - name: obtain all information for the specified domain
+    - name: Obtain domain certificate information
       aws_acm_info:
-        domain_name: "*.sky-boston.com"
+        domain_name: "sky-boston.com"
       register: domain_cert
     - name:
       debug: var=domain_cert

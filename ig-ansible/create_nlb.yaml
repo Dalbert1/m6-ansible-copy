@@ -24,6 +24,19 @@
         in_vpc: yes
         release_on_disassociation: yes
       register: eip2
+    - name: Update route53 DNS type A record with elastic IPs
+      route53:
+        state: present
+        overwrite: yes
+        region: us-east-2
+        zone: sky-boston.com
+        record: sky-boston.com
+        identifier: sky-boston.com
+        type: A
+        ttl: 300
+        value:
+          - "{{ eip1.public_ip }}"
+          - "{{ eip2.public_ip }}"
     - elb_network_lb:
         name: m5-ig-asg-lb
         subnet_mappings:
@@ -43,21 +56,9 @@
               - Type: forward # Required. Only 'forward' is accepted at this time
                 TargetGroupName: "{{ asg_ig_tag.target_group_name }}"  # Required. The name of the target group
             Certificates:
-              - CertificateArn: "{{ domain_cert.certificates.certificate_arn }}"
+              CertificateArn: "{{ domain_cert.certificate_arn }}"
             SslPolicy: ELBSecurityPolicy-2016-08
         state: present
         wait: yes
       register: ig_nlb
-    - route53:
-        state: present
-        overwrite: yes
-        region: us-east-2
-        zone: sky-boston.com
-        record: sky-boston.com
-        identifier: sky-boston.com
-        type: A
-        ttl: 300
-        value:
-          - "{{ eip1.public_ip }}"
-          - "{{ eip2.public_ip }}"
 ...
