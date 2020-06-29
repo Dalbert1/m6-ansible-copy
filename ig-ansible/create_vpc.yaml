@@ -8,7 +8,7 @@
       - name: Create VPC
         ec2_vpc_net:
           name: m5-image-gallery-vpc
-          cidr_block: 10.10.0.0/16
+          cidr_block: 10.10.0.0/16 #test
           tags:
              Module: 5
           state: present
