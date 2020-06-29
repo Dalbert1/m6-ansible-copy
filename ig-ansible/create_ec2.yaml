@@ -5,7 +5,7 @@
     ami_id: "ami-026dea5602e368e96"
   module_defaults: 
     group/aws: 
-      region: "us-east-2"
+      region: "us-west-2"
   tasks:
     - name: Provision Dev EC2 Instance - configures RDS users/table/db on boot
       ec2:
@@ -14,8 +14,8 @@
         instance_type: t3.nano
         image: "{{ ami_id }}"
         instance_tags:
-          Name: m5-ig-development
-          Module: 5
+          Name: m6-ig-development
+          Module: 6
           Department: DevOps
         monitoring: yes
         wait: yes
@@ -23,7 +23,7 @@
         exact_count: 1
         user_data: "{{ lookup('file', './rds_scripts/configure_rds.sh') }}"
         count_tag:
-          Name: m5-ig-development
+          Name: m6-ig-development
         assign_public_ip: yes
         instance_profile_name: "image-gallery-role"
 ...

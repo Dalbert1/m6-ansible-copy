@@ -3,11 +3,11 @@
   gather_facts: no
   module_defaults: 
     group/aws: 
-      region: "us-east-2"
+      region: "us-west-2"
   tasks:
     - name: Create an ec2 launch template
       ec2_launch_template:
-        name: "m5-ig-nginx-lt"
+        name: "m6-ig-nginx-lt"
         image_id: "ami-026dea5602e368e96"
         key_name: auburnec2
         instance_type: t3.nano
@@ -22,15 +22,15 @@
           enabled: yes
         iam_instance_profile: image-gallery-role
         tags:
-          Name: m5-ig-asg-nginx
+          Name: m6-ig-asg-nginx
         user_data: "{{ lookup('file', './ec2_scripts/asg_bootscript.sh') | b64encode }}"
         disable_api_termination: false
       register: launch_template
     - name: debug
       debug: var=launch_template
     - ec2_asg:
-        name: m5-image-gallery-asg
-        availability_zones: [ 'us-east-2a', 'us-east-2b' ]
+        name: m6-image-gallery-asg
+        availability_zones: [ 'us-west-2a', 'us-west-2b' ]
         vpc_zone_identifier: [ "{{ public_subnet.subnet.id }}", "{{ public_subnet2.subnet.id }}" ]
         launch_template:
           version: "{{ launch_template.latest_template.version_number }}"
@@ -43,5 +43,5 @@
         tags:
           - environment: production
             propagate_at_launch: no
-            Name: m5-ig-asg
+            Name: m6-ig-asg
 ...

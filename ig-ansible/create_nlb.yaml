@@ -3,10 +3,10 @@
   gather_facts: no
   module_defaults: 
     group/aws: 
-      region: "us-east-2"
+      region: "us-west-2"
   tasks:
     - elb_target_group:
-        name: m5-asg-ig-tag
+        name: m6-asg-ig-tag
         protocol: tcp
         port: 80
         vpc_id: "{{ vpc.vpc.id }}"
@@ -28,7 +28,7 @@
       route53:
         state: present
         overwrite: yes
-        region: us-east-2
+        region: us-west-2
         zone: sky-boston.com
         record: sky-boston.com
         identifier: sky-boston.com
@@ -38,7 +38,7 @@
           - "{{ eip1.public_ip }}"
           - "{{ eip2.public_ip }}"
     - elb_network_lb:
-        name: m5-ig-asg-lb
+        name: m6-ig-asg-lb
         subnet_mappings:
           - SubnetId: "{{ public_subnet.subnet.id }}"
             AllocationId: "{{ eip1.allocation_id }}"
@@ -49,7 +49,7 @@
             Port: 80 # Required. The port on which the load balancer is listening.
             DefaultActions:
               - Type: forward # Required. Only 'forward' is accepted at this time
-                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m5-asg-ig-tag # Required. The name of the target group
+                TargetGroupName: "{{ asg_ig_tag.target_group_name }}"    #m6-asg-ig-tag # Required. The name of the target group
           - Protocol: TLS # Required. The protocol for connections from clients to the load balancer (TCP or TLS) (case-sensitive).
             Port: 443 # Required for TLS traffic. Not a default setting.
             DefaultActions:

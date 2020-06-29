@@ -17,7 +17,7 @@ git clone https://github.com/Dalbert1/ig_ansible_boot.git
 chown -R ec2-user:ec2-user python-image-gallery
 chown -R ec2-user:ec2-user ig_ansible_boot
 cd /home/ec2-user/ig_ansible_boot/ig-ansible
-export AWS_DEFAULT_REGION=us-east-2
+export AWS_DEFAULT_REGION=us-west-2
 export AWS_DEFAULT_OUTPUT=json
 export PGPASSWORD=$(aws secretsmanager get-secret-value --secret-id sec-ig-postgres | jq --raw-output .SecretString | jq -r ."password")
 export PGUSER=$(aws secretsmanager get-secret-value --secret-id sec-ig-postgres | jq --raw-output .SecretString | jq -r ."username")

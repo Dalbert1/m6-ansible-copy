@@ -3,35 +3,35 @@
    gather_facts: no
    module_defaults:
     group/aws:
-      region: "us-east-2"
+      region: "us-west-2"
    vars:
-    sql_pwd: "{{ lookup('password', '/tmp/m5_ig_pwds/postgres_user chars=ascii_letters,digits') }}"
-    ig_sql_pwd: "{{ lookup('password', '/tmp/m5_ig_pwds/image_gallery_user chars=ascii_letters,digits') }}"
+    sql_pwd: "{{ lookup('password', '/tmp/m6_ig_pwds/postgres_user chars=ascii_letters,digits') }}"
+    ig_sql_pwd: "{{ lookup('password', '/tmp/m6_ig_pwds/image_gallery_user chars=ascii_letters,digits') }}"
    tasks:
     - rds_subnet_group:
         state: present
-        name: m5-rds-priv-dbgrp
-        description: Module 5 Private Subnet Group
+        name: m6-rds-priv-dbgrp
+        description: Module 6 Private Subnet Group
         subnets:
           - "{{ private_subnet.subnet.id }}"
           - "{{ private_subnet2.subnet.id }}"
       register: rds_subnet_group
     - rds:
         command: create
-        instance_name: m5-ansible-image-gallery-rds
+        instance_name: m6-ansible-image-gallery-rds
         db_engine: postgres
         size: 10
         instance_type: db.t2.micro
         username: postgres
-        password: "{{ lookup('password', '/tmp/m5_ig_pwds/postgres_user.txt') }}"
+        password: "{{ lookup('password', '/tmp/m6_ig_pwds/postgres_user.txt') }}"
         vpc_security_groups: "{{ ig_postgres_sg.group_id }}"
         subnet: "{{ rds_subnet_group.subnet_group.name }}"
         wait: yes
         wait_timeout: 550
-        region: us-east-2
-        zone: us-east-2b
+        region: us-west-2
+        zone: us-west-2b
         tags:
           Environment: production
-          Name: Module 5 RDS
+          Name: Module 6 RDS
       register: rds_instance
 ...
