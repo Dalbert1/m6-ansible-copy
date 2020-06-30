@@ -2,7 +2,7 @@
 - hosts: localhost
   gather_facts: no
   vars:
-    ami_id: "ami-026dea5602e368e9"
+    ami_id: "ami-0e34e7b9ca0ace12d"
   module_defaults: 
     group/aws: 
       region: "us-west-2"
